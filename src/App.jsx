@@ -21,6 +21,7 @@ function App() {
   });
   const [loadingExercises, setLoadingExercises] = useState(true); // Loading state for exercises
   const [fetchError, setFetchError] = useState(null); // State for fetch errors
+  const [showCustomExerciseForm, setShowCustomExerciseForm] = useState(false); // State to toggle form visibility
 
   // Load saved workouts from localStorage on mount
   useEffect(() => {
@@ -85,6 +86,7 @@ function App() {
       ...prevCustomExercises,
       newExercise,
     ]);
+    setShowCustomExerciseForm(false); // Hide form after adding exercise
   };
 
   const handleAddToWorkout = (exercise) => {
@@ -276,8 +278,21 @@ function App() {
             </button>
           </div>
         )}
-        {/* Add Custom Exercise Form */}
-        <CustomExerciseForm onAddCustomExercise={handleAddCustomExercise} />
+
+        {/* Button to toggle custom exercise form */}
+        <div className="add-custom-exercise-btn-container">
+          <button
+            className="add-custom-exercise-toggle-btn"
+            onClick={() => setShowCustomExerciseForm(!showCustomExerciseForm)}
+          >
+            {showCustomExerciseForm ? "Hide Form" : "Add Custom Exercise"}
+          </button>
+        </div>
+
+        {/* Custom Exercise Form (conditionally rendered) */}
+        {showCustomExerciseForm && (
+          <CustomExerciseForm onAddCustomExercise={handleAddCustomExercise} />
+        )}
 
         {loadingExercises ? (
           <div className="loading">Loading exercises...</div>

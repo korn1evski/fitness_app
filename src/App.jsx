@@ -14,12 +14,18 @@ function App() {
       setTimeout(() => setError(""), 2000);
       return;
     }
-    setWorkout([...workout, exercise]);
+    setWorkout([...workout, { ...exercise, sets: 3, reps: 10, weight: 0 }]);
     setError("");
   };
 
   const handleRemoveFromWorkout = (id) => {
     setWorkout(workout.filter((ex) => ex.id !== id));
+  };
+
+  const handleWorkoutInputChange = (id, field, value) => {
+    setWorkout((prevWorkout) =>
+      prevWorkout.map((ex) => (ex.id === id ? { ...ex, [field]: value } : ex))
+    );
   };
 
   let content;
@@ -33,7 +39,6 @@ function App() {
   } else if (activePage === "exercises") {
     content = (
       <>
-        <ExerciseList onAddToWorkout={handleAddToWorkout} />
         <div className="current-workout-section">
           <h2>Current Workout</h2>
           {error && <div className="error">{error}</div>}
@@ -42,8 +47,62 @@ function App() {
           ) : (
             <ul className="workout-list">
               {workout.map((exercise) => (
-                <li key={exercise.id} className="workout-item">
-                  <span>{exercise.name}</span>
+                <li key={exercise.id} className="workout-item improved">
+                  <img
+                    src={exercise.gifUrl}
+                    alt={exercise.name}
+                    className="workout-ex-img"
+                  />
+                  <div className="workout-ex-info">
+                    <span className="workout-ex-name">{exercise.name}</span>
+                    <div className="workout-inputs">
+                      <label>
+                        Sets:
+                        <input
+                          type="number"
+                          min="1"
+                          value={exercise.sets}
+                          onChange={(e) =>
+                            handleWorkoutInputChange(
+                              exercise.id,
+                              "sets",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </label>
+                      <label>
+                        Reps:
+                        <input
+                          type="number"
+                          min="1"
+                          value={exercise.reps}
+                          onChange={(e) =>
+                            handleWorkoutInputChange(
+                              exercise.id,
+                              "reps",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </label>
+                      <label>
+                        Weight:
+                        <input
+                          type="number"
+                          min="0"
+                          value={exercise.weight}
+                          onChange={(e) =>
+                            handleWorkoutInputChange(
+                              exercise.id,
+                              "weight",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </label>
+                    </div>
+                  </div>
                   <button
                     className="remove-btn"
                     onClick={() => handleRemoveFromWorkout(exercise.id)}
@@ -55,6 +114,7 @@ function App() {
             </ul>
           )}
         </div>
+        <ExerciseList onAddToWorkout={handleAddToWorkout} />
       </>
     );
   } else if (activePage === "workouts") {

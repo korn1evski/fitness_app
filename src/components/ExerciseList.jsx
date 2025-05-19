@@ -53,7 +53,7 @@ const ExerciseList = ({ onAddToWorkout }) => {
   }
 
   return (
-    <div className="exercise-list">
+    <div className="exercise-section-card">
       <h2>Available Exercises</h2>
       <div className="exercise-grid">
         {exercises.map((exercise) => (

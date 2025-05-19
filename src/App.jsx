@@ -64,86 +64,82 @@ function App() {
   } else if (activePage === "exercises") {
     content = (
       <>
-        <div className="current-workout-section">
-          <h2>Current Workout</h2>
-          {error && <div className="error">{error}</div>}
-          {workout.length === 0 ? (
-            <p>No exercises added yet.</p>
-          ) : (
-            <>
-              <ul className="workout-list">
-                {workout.map((exercise) => (
-                  <li key={exercise.id} className="workout-item improved">
-                    <img
-                      src={exercise.gifUrl}
-                      alt={exercise.name}
-                      className="workout-ex-img"
-                    />
-                    <div className="workout-ex-info">
-                      <span className="workout-ex-name">{exercise.name}</span>
-                      <div className="workout-inputs">
-                        <label>
-                          Sets:
-                          <input
-                            type="number"
-                            min="1"
-                            value={exercise.sets}
-                            onChange={(e) =>
-                              handleWorkoutInputChange(
-                                exercise.id,
-                                "sets",
-                                Number(e.target.value)
-                              )
-                            }
-                          />
-                        </label>
-                        <label>
-                          Reps:
-                          <input
-                            type="number"
-                            min="1"
-                            value={exercise.reps}
-                            onChange={(e) =>
-                              handleWorkoutInputChange(
-                                exercise.id,
-                                "reps",
-                                Number(e.target.value)
-                              )
-                            }
-                          />
-                        </label>
-                        <label>
-                          Weight:
-                          <input
-                            type="number"
-                            min="0"
-                            value={exercise.weight}
-                            onChange={(e) =>
-                              handleWorkoutInputChange(
-                                exercise.id,
-                                "weight",
-                                Number(e.target.value)
-                              )
-                            }
-                          />
-                        </label>
-                      </div>
+        {workout.length > 0 && (
+          <div className="current-workout-section">
+            <h2>Current Workout</h2>
+            {error && <div className="error">{error}</div>}
+            <ul className="workout-list">
+              {workout.map((exercise) => (
+                <li key={exercise.id} className="workout-item improved">
+                  <img
+                    src={exercise.gifUrl}
+                    alt={exercise.name}
+                    className="workout-ex-img"
+                  />
+                  <div className="workout-ex-info">
+                    <span className="workout-ex-name">{exercise.name}</span>
+                    <div className="workout-inputs">
+                      <label>
+                        Sets:
+                        <input
+                          type="number"
+                          min="1"
+                          value={exercise.sets}
+                          onChange={(e) =>
+                            handleWorkoutInputChange(
+                              exercise.id,
+                              "sets",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </label>
+                      <label>
+                        Reps:
+                        <input
+                          type="number"
+                          min="1"
+                          value={exercise.reps}
+                          onChange={(e) =>
+                            handleWorkoutInputChange(
+                              exercise.id,
+                              "reps",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </label>
+                      <label>
+                        Weight:
+                        <input
+                          type="number"
+                          min="0"
+                          value={exercise.weight}
+                          onChange={(e) =>
+                            handleWorkoutInputChange(
+                              exercise.id,
+                              "weight",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </label>
                     </div>
-                    <button
-                      className="remove-btn"
-                      onClick={() => handleRemoveFromWorkout(exercise.id)}
-                    >
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button className="save-workout-btn" onClick={handleSaveWorkout}>
-                Save Workout
-              </button>
-            </>
-          )}
-        </div>
+                  </div>
+                  <button
+                    className="remove-btn"
+                    onClick={() => handleRemoveFromWorkout(exercise.id)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button className="save-workout-btn" onClick={handleSaveWorkout}>
+              Save Workout
+            </button>
+          </div>
+        )}
         <ExerciseList onAddToWorkout={handleAddToWorkout} />
       </>
     );

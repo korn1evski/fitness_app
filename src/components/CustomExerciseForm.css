@@ -1,0 +1,55 @@
+.custom-exercise-form-card {
+  width: 100%;
+  max-width: 900px;
+  margin: 2rem auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.custom-exercise-form-card h2 {
+  color: #2196f3;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.custom-exercise-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.custom-exercise-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.custom-exercise-form input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.add-custom-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1.5rem;
+}
+
+.add-custom-btn:hover {
+  background-color: #388e3c;
+}

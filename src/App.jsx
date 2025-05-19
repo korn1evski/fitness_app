@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Layout from "./components/Layout";
 import ExerciseList from "./components/ExerciseList";
+import CustomExerciseForm from "./components/CustomExerciseForm"; // Import CustomExerciseForm
+import { API_CONFIG } from "./config"; // Import API config
 
 function App() {
   const [activePage, setActivePage] = useState("home");
@@ -11,11 +13,79 @@ function App() {
     const stored = localStorage.getItem("savedWorkouts");
     return stored ? JSON.parse(stored) : [];
   });
+  const [apiExercises, setApiExercises] = useState([]); // State for API exercises
+  const [customExercises, setCustomExercises] = useState(() => {
+    // State for custom exercises
+    const stored = localStorage.getItem("customExercises");
+    return stored ? JSON.parse(stored) : [];
+  });
+  const [loadingExercises, setLoadingExercises] = useState(true); // Loading state for exercises
+  const [fetchError, setFetchError] = useState(null); // State for fetch errors
+
+  // Load saved workouts from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("savedWorkouts");
+    if (stored) {
+      setSavedWorkouts(JSON.parse(stored));
+    }
+  }, []);
 
   // Save workouts to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("savedWorkouts", JSON.stringify(savedWorkouts));
   }, [savedWorkouts]);
+
+  // Save custom exercises to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("customExercises", JSON.stringify(customExercises));
+  }, [customExercises]);
+
+  // Fetch API exercises on mount
+  useEffect(() => {
+    const fetchExercises = async () => {
+      if (!API_CONFIG.RAPID_API_KEY) {
+        setFetchError(
+          "API key is not configured. Please add your RapidAPI key to the config file or .env file."
+        );
+        setLoadingExercises(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "https://exercisedb.p.rapidapi.com/exercises",
+          {
+            headers: {
+              "X-RapidAPI-Key": API_CONFIG.RAPID_API_KEY,
+              "X-RapidAPI-Host": API_CONFIG.RAPID_API_HOST,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch exercises");
+        }
+        const data = await response.json();
+        setApiExercises(data);
+        setLoadingExercises(false);
+      } catch (err) {
+        setFetchError(err.message);
+        setLoadingExercises(false);
+      }
+    };
+    fetchExercises();
+  }, []);
+
+  // Combine API and custom exercises
+  const allExercises = [...apiExercises, ...customExercises];
+
+  // Handler to add custom exercise
+  const handleAddCustomExercise = (newExercise) => {
+    setCustomExercises((prevCustomExercises) => [
+      ...prevCustomExercises,
+      newExercise,
+    ]);
+  };
 
   const handleAddToWorkout = (exercise) => {
     if (workout.find((ex) => ex.id === exercise.id)) {
@@ -57,13 +127,13 @@ function App() {
   if (activePage === "home") {
     // Calculate statistics
     const totalWorkouts = savedWorkouts.length;
-    const allExercises = savedWorkouts.flatMap((w) => w.exercises);
-    const totalExercises = allExercises.length;
+    const allExercisesInHistory = savedWorkouts.flatMap((w) => w.exercises);
+    const totalExercisesInHistory = allExercisesInHistory.length;
     const exerciseCount = {};
     let totalSets = 0,
       totalReps = 0,
       totalWeight = 0;
-    allExercises.forEach((ex) => {
+    allExercisesInHistory.forEach((ex) => {
       exerciseCount[ex.name] = (exerciseCount[ex.name] || 0) + 1;
       totalSets += Number(ex.sets) || 0;
       totalReps += Number(ex.reps) || 0;
@@ -75,7 +145,9 @@ function App() {
       mostUsedExercise = Object.keys(exerciseCount).reduce((a, b) =>
         exerciseCount[a] > exerciseCount[b] ? a : b
       );
-      const found = allExercises.find((ex) => ex.name === mostUsedExercise);
+      const found = allExercisesInHistory.find(
+        (ex) => ex.name === mostUsedExercise
+      );
       mostUsedExerciseGif = found ? found.gifUrl : null;
     }
 
@@ -94,7 +166,9 @@ function App() {
             </div>
             <div className="stat-card">
               <span className="stat-label">Total Exercises</span>
-              <span className="stat-value stat-center">{totalExercises}</span>
+              <span className="stat-value stat-center">
+                {totalExercisesInHistory}
+              </span>
             </div>
             <div className="stat-card most-used-ex-card">
               <span className="stat-label">Most Used Exercise</span>
@@ -202,7 +276,24 @@ function App() {
             </button>
           </div>
         )}
-        <ExerciseList onAddToWorkout={handleAddToWorkout} />
+        {/* Add Custom Exercise Form */}
+        <CustomExerciseForm onAddCustomExercise={handleAddCustomExercise} />
+
+        {loadingExercises ? (
+          <div className="loading">Loading exercises...</div>
+        ) : fetchError ? (
+          <div className="error">Error fetching exercises: {fetchError}</div>
+        ) : API_CONFIG.RAPID_API_KEY ? (
+          <ExerciseList
+            exercises={allExercises}
+            onAddToWorkout={handleAddToWorkout}
+          />
+        ) : (
+          <div className="error">
+            API key is not configured. Please add your RapidAPI key to the
+            config file or .env file.
+          </div>
+        )}
       </>
     );
   } else if (activePage === "workouts") {

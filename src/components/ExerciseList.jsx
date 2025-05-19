@@ -1,49 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { API_CONFIG } from "../config";
+import React from "react";
 import "./ExerciseList.css";
 
-const ExerciseList = ({ onAddToWorkout }) => {
-  const [exercises, setExercises] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchExercises = async () => {
-      if (!API_CONFIG.RAPID_API_KEY) {
-        setError(
-          "API key is not configured. Please add your RapidAPI key to the .env file."
-        );
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          "https://exercisedb.p.rapidapi.com/exercises",
-          {
-            headers: {
-              "X-RapidAPI-Key": API_CONFIG.RAPID_API_KEY,
-              "X-RapidAPI-Host": API_CONFIG.RAPID_API_HOST,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch exercises");
-        }
-
-        const data = await response.json();
-        setExercises(data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchExercises();
-  }, []);
-
+const ExerciseList = ({ exercises, onAddToWorkout, loading, error }) => {
   if (loading) {
     return <div className="loading">Loading exercises...</div>;
   }

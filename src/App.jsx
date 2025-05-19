@@ -7,15 +7,10 @@ function App() {
   const [activePage, setActivePage] = useState("home");
   const [workout, setWorkout] = useState([]);
   const [error, setError] = useState("");
-  const [savedWorkouts, setSavedWorkouts] = useState([]);
-
-  // Load saved workouts from localStorage on mount
-  useEffect(() => {
+  const [savedWorkouts, setSavedWorkouts] = useState(() => {
     const stored = localStorage.getItem("savedWorkouts");
-    if (stored) {
-      setSavedWorkouts(JSON.parse(stored));
-    }
-  }, []);
+    return stored ? JSON.parse(stored) : [];
+  });
 
   // Save workouts to localStorage whenever they change
   useEffect(() => {

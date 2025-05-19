@@ -69,10 +69,15 @@ function App() {
       totalReps += Number(ex.reps) || 0;
       totalWeight += Number(ex.weight) || 0;
     });
-    const mostUsedExercise = Object.keys(exerciseCount).reduce(
-      (a, b) => (exerciseCount[a] > exerciseCount[b] ? a : b),
-      Object.keys(exerciseCount)[0] || "-"
-    );
+    let mostUsedExercise = null;
+    let mostUsedExerciseGif = null;
+    if (Object.keys(exerciseCount).length > 0) {
+      mostUsedExercise = Object.keys(exerciseCount).reduce((a, b) =>
+        exerciseCount[a] > exerciseCount[b] ? a : b
+      );
+      const found = allExercises.find((ex) => ex.name === mostUsedExercise);
+      mostUsedExerciseGif = found ? found.gifUrl : null;
+    }
 
     content = (
       <>
@@ -85,27 +90,34 @@ function App() {
           <div className="stats-grid">
             <div className="stat-card">
               <span className="stat-label">Total Workouts</span>
-              <span className="stat-value">{totalWorkouts}</span>
+              <span className="stat-value stat-center">{totalWorkouts}</span>
             </div>
             <div className="stat-card">
               <span className="stat-label">Total Exercises</span>
-              <span className="stat-value">{totalExercises}</span>
+              <span className="stat-value stat-center">{totalExercises}</span>
             </div>
-            <div className="stat-card">
+            <div className="stat-card most-used-ex-card">
               <span className="stat-label">Most Used Exercise</span>
-              <span className="stat-value">{mostUsedExercise || "-"}</span>
+              {mostUsedExerciseGif && (
+                <img
+                  src={mostUsedExerciseGif}
+                  alt={mostUsedExercise}
+                  className="stat-ex-gif"
+                />
+              )}
+              <span className="stat-ex-name">{mostUsedExercise || "-"}</span>
             </div>
             <div className="stat-card">
               <span className="stat-label">Total Sets</span>
-              <span className="stat-value">{totalSets}</span>
+              <span className="stat-value stat-center">{totalSets}</span>
             </div>
             <div className="stat-card">
               <span className="stat-label">Total Reps</span>
-              <span className="stat-value">{totalReps}</span>
+              <span className="stat-value stat-center">{totalReps}</span>
             </div>
             <div className="stat-card">
               <span className="stat-label">Total Weight</span>
-              <span className="stat-value">{totalWeight}</span>
+              <span className="stat-value stat-center">{totalWeight}</span>
             </div>
           </div>
         </div>

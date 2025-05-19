@@ -55,11 +55,61 @@ function App() {
 
   let content;
   if (activePage === "home") {
+    // Calculate statistics
+    const totalWorkouts = savedWorkouts.length;
+    const allExercises = savedWorkouts.flatMap((w) => w.exercises);
+    const totalExercises = allExercises.length;
+    const exerciseCount = {};
+    let totalSets = 0,
+      totalReps = 0,
+      totalWeight = 0;
+    allExercises.forEach((ex) => {
+      exerciseCount[ex.name] = (exerciseCount[ex.name] || 0) + 1;
+      totalSets += Number(ex.sets) || 0;
+      totalReps += Number(ex.reps) || 0;
+      totalWeight += Number(ex.weight) || 0;
+    });
+    const mostUsedExercise = Object.keys(exerciseCount).reduce(
+      (a, b) => (exerciseCount[a] > exerciseCount[b] ? a : b),
+      Object.keys(exerciseCount)[0] || "-"
+    );
+
     content = (
-      <div className="welcome-section">
-        <h1>Welcome to Fitness Tracker</h1>
-        <p>Start your fitness journey today!</p>
-      </div>
+      <>
+        <div className="welcome-section">
+          <h1>Welcome to Fitness Tracker</h1>
+          <p>Start your fitness journey today!</p>
+        </div>
+        <div className="stats-section">
+          <h2>Statistics</h2>
+          <div className="stats-grid">
+            <div className="stat-card">
+              <span className="stat-label">Total Workouts</span>
+              <span className="stat-value">{totalWorkouts}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-label">Total Exercises</span>
+              <span className="stat-value">{totalExercises}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-label">Most Used Exercise</span>
+              <span className="stat-value">{mostUsedExercise || "-"}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-label">Total Sets</span>
+              <span className="stat-value">{totalSets}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-label">Total Reps</span>
+              <span className="stat-value">{totalReps}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-label">Total Weight</span>
+              <span className="stat-value">{totalWeight}</span>
+            </div>
+          </div>
+        </div>
+      </>
     );
   } else if (activePage === "exercises") {
     content = (

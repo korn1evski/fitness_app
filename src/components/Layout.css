@@ -1,3 +1,19 @@
+:root[data-nav-theme="light"] {
+  --nav-bg: #2196f3;
+  --nav-text: white;
+  --nav-hover: rgba(255, 255, 255, 0.1);
+  --nav-active: rgba(255, 255, 255, 0.2);
+  --nav-toggle-bg: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-nav-theme="dark"] {
+  --nav-bg: #1a1a1a;
+  --nav-text: #e0e0e0;
+  --nav-hover: rgba(255, 255, 255, 0.05);
+  --nav-active: rgba(255, 255, 255, 0.1);
+  --nav-toggle-bg: rgba(255, 255, 255, 0.05);
+}
+
 .layout {
   min-height: 100vh;
   display: flex;
@@ -5,17 +21,24 @@
 }
 
 .nav {
-  background-color: #2196f3;
+  background-color: var(--nav-bg);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  color: var(--nav-text);
+  transition: background-color 0.3s ease;
 }
 
 .nav-brand {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .nav-items {
@@ -29,7 +52,7 @@
 .nav-item {
   background: none;
   border: none;
-  color: white;
+  color: var(--nav-text);
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 1rem;
@@ -38,11 +61,31 @@
 }
 
 .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--nav-hover);
 }
 
 .nav-item.active {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--nav-active);
+}
+
+.theme-toggle {
+  background: var(--nav-toggle-bg);
+  border: none;
+  color: var(--nav-text);
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: background-color 0.2s;
+}
+
+.theme-toggle:hover {
+  background-color: var(--nav-hover);
 }
 
 .main-content {

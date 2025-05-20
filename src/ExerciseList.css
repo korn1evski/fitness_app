@@ -1,0 +1,164 @@
+.exercise-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.exercise-card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.2s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.exercise-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--hover-box-shadow, 0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.exercise-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.exercise-content {
+  padding: 1.5rem;
+}
+
+.exercise-name {
+  color: var(--text-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.exercise-muscle {
+  color: var(--secondary-text-color);
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+  transition: color 0.3s ease;
+}
+
+.exercise-equipment {
+  color: var(--secondary-text-color);
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+  transition: color 0.3s ease;
+}
+
+.add-to-workout-btn {
+  background-color: var(--primary-color);
+  color: var(--button-text-color, white);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--box-shadow);
+}
+
+.add-to-workout-btn:hover {
+  background-color: var(--primary-dark-color);
+}
+
+.current-workout-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.dark-mode .workout-exercise-card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.workout-exercise-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.workout-exercise-details {
+  flex: 1;
+}
+
+.dark-mode .workout-exercise-name {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .workout-exercise-muscle {
+  color: var(--secondary-text-color);
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.workout-exercise-input {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.dark-mode .workout-exercise-input input {
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.workout-exercise-input input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.dark-mode .remove-exercise-btn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .remove-exercise-btn:hover {
+  background-color: var(--secondary-card-background);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
